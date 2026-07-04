@@ -1,4 +1,5 @@
 .env
+*.local.html
 drafts/
 __pycache__/
 *.pyc

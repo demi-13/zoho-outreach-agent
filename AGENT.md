@@ -178,11 +178,11 @@ $accountId = $accountsResp.data[0].accountId
 
 ### 4d. Save draft
 
-Load the HTML signature from `signature.html` and build the full email body:
+Load the HTML email template from `email-template.local.html` (falls back to `signature.html` style if missing) and inject the drafted email body into the `{{BODY}}` placeholder. The template already contains the sign-off and branding — do not append a separate signature.
 
 ```powershell
-$signature    = Get-Content "C:\Users\demio\drcc-outreach-agent\signature.html" -Raw
-$fullContent  = "$emailBody<br><br>With gratitude, [YOUR_ALIAS]<br><br>$signature"
+$template    = Get-Content "C:\Users\demio\drcc-outreach-agent\email-template.local.html" -Raw
+$fullContent = $template -replace "\{\{BODY\}\}", $emailBody
 
 $draft = @{
     fromAddress = "[YOUR_EMAIL]"
