@@ -87,8 +87,22 @@ Write a **1-2 sentence** email following these rules exactly:
 - Do not explain your reasoning or introduce the email
 - Do not say "I wanted to share" or "I thought you might find this interesting"
 - Include the **real URL** inline in the sentence
-- End with exactly one of: `thought of you` or `would love to work on something like this together`
+- End with a closer that fits the find. Pick whichever reads most naturally, and don't reuse the same closer two drafts in a row.
 - Plain text only — no HTML tags, no citation tags, no markdown formatting in the email body
+
+### Closer Options
+
+**If the hook was an article/study/regulation:**
+- `thought of you`
+- `figured you'd want to see this`
+- `made me think of what you're working on`
+- `seemed right up your alley`
+
+**If the hook was a conference/event:**
+- `would love to work on something like this together`
+- `let me know if you'll be there`
+- `might be worth a look if you're headed that way`
+- `curious if this is on your radar`
 
 ### Sign-off (always exactly this)
 ```
