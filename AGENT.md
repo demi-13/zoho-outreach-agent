@@ -81,9 +81,10 @@ Write a **1-2 sentence** email following these rules exactly:
 
 ### Tone Rules
 - Casual — like a colleague texting something cool they just found
+- Start with a short greeting using the prospect's first name: `Hi [First Name],` on its own line
 - No em dashes (—) and no double hyphens (--). Use a comma or rewrite the sentence to flow naturally without them.
 - No fluff, no preamble, no sales language
-- Do not start with "Hi", "Hello", "I hope this finds you", or any greeting
+- After the greeting, do not add "I hope this finds you" or any other pleasantry, go straight into the find
 - Do not explain your reasoning or introduce the email
 - Do not say "I wanted to share" or "I thought you might find this interesting"
 - Include the **real URL** inline in the sentence
@@ -104,9 +105,10 @@ Write a **1-2 sentence** email following these rules exactly:
 - `might be worth a look if you're headed that way`
 - `curious if this is on your radar`
 
-### Sign-off (always exactly this)
+### Sign-off (always exactly this — "With gratitude," and the alias on separate lines)
 ```
-With gratitude, [YOUR_ALIAS]
+With gratitude,
+[YOUR_ALIAS]
 
 [YOUR_NAME]
 [YOUR_TITLE]
@@ -122,9 +124,11 @@ Produce output in exactly this structure — nothing before, nothing after:
 ```
 Subject: [one sharp, specific subject line — no filler words]
 
+Hi [First Name],
+
 [1-2 sentence email body with URL inline]
 
-With gratitude, 
+With gratitude,
 [YOUR_ALIAS]
 ```
 
@@ -133,17 +137,23 @@ With gratitude,
 ```
 Subject: New ASTM guide on implantable polymer testing
 
+Hi Sarah,
+
 Just saw this updated ASTM guide on mechanical testing for implantable-grade polymers, https://example.com/astm-implant-polymers-2025, thought of you.
 
-With gratitude, [YOUR_ALIAS]
+With gratitude,
+[YOUR_ALIAS]
 ```
 
 ```
 Subject: FDA's new draft guidance on 3D printed medical devices
 
+Hi Marcus,
+
 FDA just dropped draft guidance on additive manufacturing for medical devices, https://example.com/fda-am-guidance-2025, would love to work on something like this together.
 
-With gratitude, [YOUR_ALIAS]
+With gratitude,
+[YOUR_ALIAS]
 ```
 
 ---
