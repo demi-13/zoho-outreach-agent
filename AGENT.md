@@ -204,27 +204,33 @@ $accountId = $accountsResp.data[0].accountId
 
 Load the HTML email template from `email-template.local.html` (falls back to `signature.html` style if missing) and inject the drafted email body into the `{{BODY}}` placeholder. The template already contains the sign-off and branding — do not append a separate signature.
 
+If the prospect has no email on file in CRM, still save the draft to Zoho Mail with `toAddress` left as an empty string — Zoho accepts this. Do not fall back to a local file just because the email is missing; it can be typed in manually before sending.
+
+**IMPORTANT: `Invoke-RestMethod -Body` must receive UTF-8 encoded bytes, not a raw JSON string.** Piping `ConvertTo-Json` output straight into `-Body` mangles special characters (quotes, ampersands in URLs) and causes Zoho to reject the request with `PATTERN_NOT_MATCHED`, which looks like a scope/permissions error but is actually a malformed-body error. Always convert to bytes explicitly as shown below — do not skip this step or "simplify" it.
+
 ```powershell
 $template    = Get-Content "C:\Users\demio\drcc-outreach-agent\email-template.local.html" -Raw
-$fullContent = $template -replace "\{\{BODY\}\}", $emailBody
+$fullContent = $template.Replace("{{BODY}}", $emailBody)
 
-$draft = @{
+$draftObj = [PSCustomObject]@{
     fromAddress = "[YOUR_EMAIL]"
-    toAddress   = $prospectEmail
+    toAddress   = $prospectEmail  # empty string "" is fine if no email on file
     subject     = $subject
     content     = $fullContent
     mailFormat  = "html"
     mode        = "draft"
-} | ConvertTo-Json -Compress
+}
+$draftJson = $draftObj | ConvertTo-Json -Compress -Depth 5
+$bytes     = [System.Text.Encoding]::UTF8.GetBytes($draftJson)
 
 $result = Invoke-RestMethod `
     -Method POST `
     -Uri "https://mail.zoho.com/api/accounts/$accountId/messages" `
     -Headers @{
         Authorization  = "Zoho-oauthtoken $accessToken"
-        "Content-Type" = "application/json"
+        "Content-Type" = "application/json; charset=UTF-8"
     } `
-    -Body $draft
+    -Body $bytes
 ```
 
 If successful, output: `Draft saved to Zoho Mail.`
