@@ -9,7 +9,7 @@ import anthropic
 import requests
 from dotenv import load_dotenv
 
-load_dotenv(Path(__file__).parent / ".env")
+load_dotenv(Path(__file__).parent.parent / "outreach-emailer" / ".env")
 
 SYSTEM_PROMPT = """You are a personal outreach assistant. Your user is a fractional R&D consultant specializing in plastic materials, polymer testing, resin-based 3D printing, failure analysis, and chemical formulation. Clients are in manufacturing, medical devices, fertility science, biotech, and advanced materials.
 

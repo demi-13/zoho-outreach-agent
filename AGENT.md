@@ -101,7 +101,7 @@ Write a **1-2 sentence** email following these rules exactly:
 
 **If the hook was a conference/event:**
 - `would love to work on something like this together`
-- `let me know if you'll be there`
+- `let me know if this is something you'd be interested in attending`
 - `might be worth a look if you're headed that way`
 - `curious if this is on your radar`
 
