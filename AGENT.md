@@ -119,14 +119,16 @@ With gratitude,
 ```
 
 ### Output Format
-Produce output in exactly this structure — nothing before, nothing after:
+The subject line is always exactly `Saw this and thought of you` — never a specific, sharp subject about the find itself. Produce output in exactly this structure — nothing before, nothing after:
 
 ```
-Subject: [one sharp, specific subject line — no filler words]
+Subject: Saw this and thought of you
 
 Hi [First Name],
 
 [1-2 sentence email body with URL inline]
+
+What do you think?
 
 With gratitude,
 [YOUR_ALIAS]
@@ -135,22 +137,26 @@ With gratitude,
 ### Examples of Good Emails
 
 ```
-Subject: New ASTM guide on implantable polymer testing
+Subject: Saw this and thought of you
 
 Hi Sarah,
 
 Just saw this updated ASTM guide on mechanical testing for implantable-grade polymers, https://example.com/astm-implant-polymers-2025, thought of you.
+
+What do you think?
 
 With gratitude,
 [YOUR_ALIAS]
 ```
 
 ```
-Subject: FDA's new draft guidance on 3D printed medical devices
+Subject: Saw this and thought of you
 
 Hi Marcus,
 
 FDA just dropped draft guidance on additive manufacturing for medical devices, https://example.com/fda-am-guidance-2025, would love to work on something like this together.
+
+What do you think?
 
 With gratitude,
 [YOUR_ALIAS]
@@ -202,7 +208,7 @@ $accountId = $accountsResp.data[0].accountId
 
 ### 4d. Save draft
 
-Load the HTML email template from `email-template.local.html` (falls back to `signature.html` style if missing) and inject the drafted email body into the `{{BODY}}` placeholder. The template already contains the sign-off and branding — do not append a separate signature.
+Load the HTML email template from `email-template.local.html` (falls back to `signature.html` style if missing) and inject the drafted email body into the `{{BODY}}` placeholder. The template already contains the "What do you think?" line and the sign-off/branding — do not append a separate signature or repeat "What do you think?" yourself. `$subject` is always the literal string `Saw this and thought of you`, not a generated headline.
 
 If the prospect has no email on file in CRM, still save the draft to Zoho Mail with `toAddress` left as an empty string — Zoho accepts this. Do not fall back to a local file just because the email is missing; it can be typed in manually before sending.
 
