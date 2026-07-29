@@ -208,7 +208,7 @@ $accountId = $accountsResp.data[0].accountId
 
 ### 4d. Save draft
 
-Load the HTML email template from `email-template.local.html` (falls back to `signature.html` style if missing) and inject the drafted email body into the `{{BODY}}` placeholder. The template already contains the "What do you think?" line and the sign-off/branding — do not append a separate signature or repeat "What do you think?" yourself. `$subject` is always the literal string `Saw this and thought of you`, not a generated headline.
+Load the HTML email template from `email-template.local.html` and inject the drafted email body into the `{{BODY}}` placeholder. The template already contains the "What do you think?" line and the sign-off/branding — do not append a separate signature or repeat "What do you think?" yourself. `$subject` is always the literal string `Saw this and thought of you`, not a generated headline.
 
 If the prospect has no email on file in CRM, still save the draft to Zoho Mail with `toAddress` left as an empty string — Zoho accepts this. Do not fall back to a local file just because the email is missing; it can be typed in manually before sending.
 

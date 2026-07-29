@@ -164,7 +164,7 @@ With gratitude,
 ### 4a. Read credentials from .env
 
 ```powershell
-$envLines = Get-Content "C:\Users\demio\outreach-emailer\.env" | Where-Object { $_ -match "^\s*[^#\s].+=.+" }
+$envLines = Get-Content "C:\Users\demio\[YOUR_ALIAS]-outreach-agent\.env" | Where-Object { $_ -match "^\s*[^#\s].+=.+" }
 $envVars = @{}
 foreach ($line in $envLines) {
     $parts = $line -split "=", 2
@@ -201,7 +201,7 @@ $accountId = $accountsResp.data[0].accountId
 
 ### 4d. Save draft
 
-Load the HTML email template from `C:\Users\demio\[YOUR_ALIAS]-outreach-agent\email-template.local.html` (falls back to `C:\Users\demio\[YOUR_ALIAS]-outreach-agent\signature.html` style if missing) and inject `Hi [First Name],<br><br>[email body sentence]` into the `{{BODY}}` placeholder. The template already contains the "What do you think?" line and the sign-off/branding — do not append a separate signature or repeat "What do you think?" yourself. `$subject` is always the literal string `Saw this and thought of you`, not a generated headline.
+Load the HTML email template from `C:\Users\demio\[YOUR_ALIAS]-outreach-agent\email-template.local.html` and inject `Hi [First Name],<br><br>[email body sentence]` into the `{{BODY}}` placeholder. The template already contains the "What do you think?" line and the sign-off/branding — do not append a separate signature or repeat "What do you think?" yourself. `$subject` is always the literal string `Saw this and thought of you`, not a generated headline.
 
 If the prospect has no email on file in CRM, still save the draft to Zoho Mail with `toAddress` left as an empty string — Zoho accepts this. Do not fall back to a local file just because the email is missing; it can be typed in manually before sending.
 
