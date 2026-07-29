@@ -164,7 +164,7 @@ With gratitude,
 ### 4a. Read credentials from .env
 
 ```powershell
-$envLines = Get-Content "C:\Users\demio\[YOUR_ALIAS]-outreach-agent\.env" | Where-Object { $_ -match "^\s*[^#\s].+=.+" }
+$envLines = Get-Content ".\.env" | Where-Object { $_ -match "^\s*[^#\s].+=.+" }
 $envVars = @{}
 foreach ($line in $envLines) {
     $parts = $line -split "=", 2
@@ -201,14 +201,14 @@ $accountId = $accountsResp.data[0].accountId
 
 ### 4d. Save draft
 
-Load the HTML email template from `C:\Users\demio\[YOUR_ALIAS]-outreach-agent\email-template.local.html` and inject `Hi [First Name],<br><br>[email body sentence]` into the `{{BODY}}` placeholder. The template already contains the "What do you think?" line and the sign-off/branding — do not append a separate signature or repeat "What do you think?" yourself. `$subject` is always the literal string `Saw this and thought of you`, not a generated headline.
+Load the HTML email template from `email-template.local.html` (in the repo root) and inject `Hi [First Name],<br><br>[email body sentence]` into the `{{BODY}}` placeholder. The template already contains the "What do you think?" line and the sign-off/branding — do not append a separate signature or repeat "What do you think?" yourself. `$subject` is always the literal string `Saw this and thought of you`, not a generated headline.
 
 If the prospect has no email on file in CRM, still save the draft to Zoho Mail with `toAddress` left as an empty string — Zoho accepts this. Do not fall back to a local file just because the email is missing; it can be typed in manually before sending.
 
 **IMPORTANT: `Invoke-RestMethod -Body` must receive UTF-8 encoded bytes, not a raw JSON string.** Piping `ConvertTo-Json` output straight into `-Body` mangles special characters (quotes, ampersands in URLs) and causes Zoho to reject the request with `PATTERN_NOT_MATCHED`, which looks like a scope/permissions error but is actually a malformed-body error. Always convert to bytes explicitly as shown below — do not skip this step or "simplify" it.
 
 ```powershell
-$template     = Get-Content "C:\Users\demio\[YOUR_ALIAS]-outreach-agent\email-template.local.html" -Raw
+$template     = Get-Content ".\email-template.local.html" -Raw
 $greetAndBody = "Hi $firstName,<br><br>$emailBodySentence"
 $fullContent  = $template.Replace("{{BODY}}", $greetAndBody)
 
@@ -242,7 +242,7 @@ If any step above throws an error (wrong scope, expired token, network issue), s
 ```powershell
 $date      = Get-Date -Format "yyyy-MM-dd"
 $safeName  = $prospectName -replace "[^a-zA-Z0-9]", "_"
-$outDir    = "C:\Users\demio\[YOUR_ALIAS]-outreach-agent\drafts"
+$outDir    = ".\drafts"
 $outFile   = "$outDir\${date}_${safeName}.txt"
 
 if (-not (Test-Path $outDir)) { New-Item -ItemType Directory -Path $outDir | Out-Null }

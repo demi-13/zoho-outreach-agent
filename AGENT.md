@@ -171,7 +171,7 @@ With gratitude,
 ### 4a. Read credentials from .env
 
 ```powershell
-$envLines = Get-Content "C:\Users\demio\outreach-emailer\.env" | Where-Object { $_ -match "^\s*[^#\s].+=.+" }
+$envLines = Get-Content ".\.env" | Where-Object { $_ -match "^\s*[^#\s].+=.+" }
 $envVars = @{}
 foreach ($line in $envLines) {
     $parts = $line -split "=", 2
@@ -215,7 +215,7 @@ If the prospect has no email on file in CRM, still save the draft to Zoho Mail w
 **IMPORTANT: `Invoke-RestMethod -Body` must receive UTF-8 encoded bytes, not a raw JSON string.** Piping `ConvertTo-Json` output straight into `-Body` mangles special characters (quotes, ampersands in URLs) and causes Zoho to reject the request with `PATTERN_NOT_MATCHED`, which looks like a scope/permissions error but is actually a malformed-body error. Always convert to bytes explicitly as shown below — do not skip this step or "simplify" it.
 
 ```powershell
-$template    = Get-Content "C:\Users\demio\[YOUR_ALIAS]-outreach-agent\email-template.local.html" -Raw
+$template    = Get-Content ".\email-template.local.html" -Raw
 $fullContent = $template.Replace("{{BODY}}", $emailBody)
 
 $draftObj = [PSCustomObject]@{
@@ -248,7 +248,7 @@ If any step above throws an error, save the draft locally instead:
 ```powershell
 $date      = Get-Date -Format "yyyy-MM-dd"
 $safeName  = $prospectName -replace "[^a-zA-Z0-9]", "_"
-$outDir    = "C:\Users\demio\[YOUR_ALIAS]-outreach-agent\drafts"
+$outDir    = ".\drafts"
 $outFile   = "$outDir\${date}_${safeName}.txt"
 
 if (-not (Test-Path $outDir)) { New-Item -ItemType Directory -Path $outDir | Out-Null }
