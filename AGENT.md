@@ -111,11 +111,11 @@ With gratitude,
 [YOUR_ALIAS]
 
 [YOUR_NAME]
-[YOUR_TITLE]
+CEO | Principal Scientist
 
-[YOUR_PHONE]
+(860) 463-4554
 [YOUR_WEBSITE]
-[YOUR_LINKEDIN]
+linkedin.com/in/yourhandle
 ```
 
 ### Output Format
