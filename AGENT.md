@@ -309,7 +309,15 @@ This is a separate routine from the outreach flow above. Run it to process leads
    ```
    This wraps the body in the branded `email-template.local.html` template, saves it as a Zoho Mail draft (mode=draft, never sends), and marks the lead's `Outreach_Draft_Created` field as "Yes" so it won't be reprocessed.
 
-6. Repeat for each pending lead, then report a short summary: how many leads were found, how many drafts were created, and any that were skipped and why.
+6. Repeat for each pending lead.
+
+7. If at least one draft was created this run, write a short summary (lead names, company, hook type, and any skipped leads with reason) to a temp file and run:
+   ```
+   python pipeline_agent.py notify "<N> outreach draft(s) ready for review" "<path_to_summary_file>"
+   ```
+   This creates a Zoho CRM Task assigned to [YOUR_ALIAS] (due today, High priority) so she knows to check Zoho Mail drafts. If zero drafts were created this run, skip this step — no task needed.
+
+8. Report the same short summary back: how many leads were found, how many drafts were created, and any that were skipped and why.
 
 ### Constraints
 

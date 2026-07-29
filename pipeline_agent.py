@@ -13,6 +13,11 @@ file only handles the Zoho CRM / Zoho Mail mechanics:
       email-template.local.html, saves it as a Zoho Mail draft (never sends),
       and marks the lead's Outreach_Draft_Created field as "Yes".
 
+  python pipeline_agent.py notify <subject> <description_file>
+      Creates a Zoho CRM Task assigned to [YOUR_ALIAS] (owner id from
+      OWNER_ZOHO_USER_ID) so she knows to check Zoho Mail drafts. Call once
+      per run after the save loop, summarizing what happened.
+
 Requires in Zoho CRM (added manually in Setup):
 - Lead_Status picklist values: "Article", "Conference"
 - Lead field: Outreach_Draft_Created (Yes/No picklist)
@@ -20,6 +25,7 @@ Requires in Zoho CRM (added manually in Setup):
 import json
 import os
 import sys
+from datetime import date
 from pathlib import Path
 
 import requests
@@ -131,6 +137,32 @@ def save_draft(token, subject, body_text, to_address):
     resp.raise_for_status()
 
 
+def create_task(token, subject, description):
+    resp = requests.post(
+        "https://www.zohoapis.com/crm/v2/Tasks",
+        headers={
+            "Authorization": f"Zoho-oauthtoken {token}",
+            "Content-Type": "application/json",
+        },
+        data=json.dumps(
+            {
+                "data": [
+                    {
+                        "Subject": subject,
+                        "Description": description,
+                        "Due_Date": date.today().isoformat(),
+                        "Status": "Not Started",
+                        "Priority": "High",
+                        "Owner": {"id": os.getenv("OWNER_ZOHO_USER_ID")},
+                    }
+                ]
+            }
+        ).encode("utf-8"),
+    )
+    resp.raise_for_status()
+    return resp.json()
+
+
 def cmd_list():
     token = get_zoho_token()
     leads = fetch_pending_leads(token)
@@ -143,6 +175,13 @@ def cmd_save(lead_id, to_email, subject, body_file):
     save_draft(token, subject, body_text, to_email)
     mark_lead_drafted(token, lead_id)
     print(f"Draft saved and lead {lead_id} marked as drafted.")
+
+
+def cmd_notify(subject, description_file):
+    description = Path(description_file).read_text(encoding="utf-8")
+    token = get_zoho_token()
+    create_task(token, subject, description)
+    print("Notification task created for [YOUR_ALIAS].")
 
 
 def main():
@@ -158,6 +197,11 @@ def main():
             print("Usage: python pipeline_agent.py save <lead_id> <to_email> <subject> <body_file>")
             sys.exit(1)
         cmd_save(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
+    elif command == "notify":
+        if len(sys.argv) != 4:
+            print("Usage: python pipeline_agent.py notify <subject> <description_file>")
+            sys.exit(1)
+        cmd_notify(sys.argv[2], sys.argv[3])
     else:
         print(f"Unknown command: {command}")
         print(__doc__)
