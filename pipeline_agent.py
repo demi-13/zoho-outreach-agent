@@ -25,7 +25,7 @@ from pathlib import Path
 import requests
 from dotenv import load_dotenv
 
-load_dotenv(Path(__file__).parent.parent / "outreach-emailer" / ".env")
+load_dotenv(Path(__file__).parent / ".env")
 
 TEMPLATE_PATH = Path(__file__).parent / "email-template.local.html"
 
