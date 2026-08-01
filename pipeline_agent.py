@@ -154,6 +154,7 @@ def create_task(token, subject, description):
                         "Status": "Not Started",
                         "Priority": "High",
                         "Owner": {"id": os.getenv("OWNER_ZOHO_USER_ID")},
+                        "Send_Notification_Email": True,
                     }
                 ]
             }
