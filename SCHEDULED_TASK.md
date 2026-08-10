@@ -20,7 +20,7 @@ Steps:
 
 1. Open a terminal / bash and run:
    cd "<path to this repo on this device>" && python pipeline_agent.py list
-   This prints a JSON array of pending leads, each with: id, name, first_name, company, industry, title, hook ("Article" or "Conference"), email. If the array is empty, there is nothing to do this run -- report that and stop.
+   This prints a JSON array of pending leads, each with: id, name, first_name, company, industry, title, hook ("Article" or "Conference"), email. Article and Conference are tracked with separate fields (Article_Draft_Created, Conference_Draft_Created), so a lead already drafted for Article still appears once it's later moved to Conference status, and vice versa -- leads should get both across the pipeline, not just whichever hook they first landed in. If the array is empty, there is nothing to do this run -- report that and stop.
 
 2. For each lead in the list, do a web search to find ONE real, specific, verifiable item that THIS specific person, in THIS specific role, would genuinely find interesting -- not just something loosely tagged to their industry.
    - Use the lead's title/role first to decide what "interesting" means for them. A technical/engineering role (R&D, product development, application development, formulation) wants a genuine materials-science, testing, or process finding they could nerd out on. A sales/business/sourcing role wants something that affects what they sell or source, not abstract science. If the title is missing or too generic to tell, default to a materials-science/R&D angle over a business one.
@@ -43,8 +43,8 @@ Steps:
 4. The subject line is always the literal string "Saw this and thought of you" for every lead -- never generate a specific, sharp subject about the find itself.
 
 5. Write the body text to a temp file, then run:
-   cd "<path to this repo on this device>" && python pipeline_agent.py save "<lead_id>" "<email>" "Saw this and thought of you" "<path_to_body_file>"
-   This wraps the body in the branded email-template.local.html template, saves it as a Zoho Mail draft (mode=draft, never sends), and marks the lead's Outreach_Draft_Created field as "Yes" so it won't be reprocessed.
+   cd "<path to this repo on this device>" && python pipeline_agent.py save "<lead_id>" "<email>" "Saw this and thought of you" "<path_to_body_file>" "<hook>"
+   This wraps the body in the branded email-template.local.html template, saves it as a Zoho Mail draft (mode=draft, never sends), and marks the lead's hook-specific field (Article_Draft_Created or Conference_Draft_Created, matching <hook>) as "Yes" so that hook won't be reprocessed -- the other hook's field is untouched, so the lead can still be drafted again later if moved to the other status.
 
 6. Repeat for each pending lead.
 
